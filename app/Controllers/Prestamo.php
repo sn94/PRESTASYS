@@ -27,11 +27,13 @@ class Prestamo extends BaseController
 		$builder = $reg->builder();
 		$builder 
 		->select("deudor.IDNRO as DEUDORID,CONCAT(deudor.NOMBRES,CONCAT(' ',deudor.APELLIDOS)) AS DEUDOR,
-		 garante.IDNRO AS GARANTEID,CONCAT(garante.NOMBRES,CONCAT(' ',garante.APELLIDOS)) as GARANTE,
+		(SELECT COUNT(cuotas_prestamo.IDNRO) FROM cuotas_prestamo WHERE IDPRESTAMO=prestamo.IDNRO) AS TOTCUOTAS,
+		(SELECT COUNT(detalle_cobro.IDNRO) FROM cobro,detalle_cobro WHERE cobro.IDNRO=detalle_cobro.IDCOBRO 
+		 AND cobro.IDPRESTAMO=prestamo.IDNRO) AS PAGADAS,
 		prestamo.IDNRO,FECHA_SOLICI,MONTO_SOLICI, ESTADO")
-		->join('deudor', 'deudor.IDNRO = prestamo.DEUDOR', "left")
-		->join('garante', 'garante.IDNRO = prestamo.GARANTE', "left")
-		->join('categoria_monto', 'categoria_monto.IDNRO = prestamo.CAT_MONTO');
+		->join('deudor', 'deudor.IDNRO = prestamo.DEUDOR', "left") 
+		->join('categoria_monto', 'categoria_monto.IDNRO = prestamo.CAT_MONTO')
+		->orderBy("prestamo.created_at");
 		$query = $builder->get();
 		$lista= $query->getResult();  //recoge todas las filas
 		 
@@ -56,9 +58,9 @@ class Prestamo extends BaseController
 			$model->save(  $this->request->getPost());
 			if( $this->request->isAJAX())
 			{$db = \Config\Database::connect();
-			echo json_encode( array("IDNRO"=> $db->insertID()   ));}
+			echo json_encode( array("IDNRO"=> $db->insertID(),  "MENSAJE"=>"PRESTAMO REGISTRADO"    ));}
 			else
-			return redirect()->to( "index");
+			return redirect()->to( base_url("prestamo/index"));
 		}
 		else {  	
 			helper("form");
@@ -86,9 +88,9 @@ class Prestamo extends BaseController
 			{
 
 				if( $this->request->isAJAX())
-				echo json_encode( array( "IDNRO"=> $datos["IDNRO"] )  );
+				echo json_encode( array( "IDNRO"=> $datos["IDNRO"], "MENSAJE"=>"INFORMACIÓN DE PRESTAMO ACTUALIZADO" )  );
 				else 
-				return redirect()->to( "index");
+				return redirect()->to( base_url("prestamo/index"));
 			}
 			else
 			echo view('plantillas/error', ['titulo'=>"ERROR", 'mensaje'=> "NO SE PUDO ACTUALIZAR" ]);  		
@@ -188,10 +190,10 @@ class Prestamo extends BaseController
 			$prestamo= $prestamo_m->find($id_prestamo);
 			//Verificar si ya se aprobo
 			if( $prestamo_m->ESTADO == "A" ){
-				return redirect()->to( "/prestamo/index");
+				return redirect()->to(base_url("prestamo/index"));
 			}else{
 				$prestamo_m->aprobar(); 	 
-				return redirect()->to( "/prestamo/index");
+				return redirect()->to( base_url("prestamo/index"));
 			}
 		}
 		else{
@@ -199,7 +201,7 @@ class Prestamo extends BaseController
 			//Prestamo
 			$prestamo= $prestamo_m->find($id_prestamo);
 			if( $prestamo->ESTADO == "A" ){
-				return redirect()->to( "/prestamo/index");
+				return redirect()->to( base_url("prestamo/index") );
 			}else{
 				//Cliente deudor
 				$ID_deudor= $prestamo->DEUDOR;
@@ -223,6 +225,14 @@ class Prestamo extends BaseController
 
 
 
+	public function rechazar(  $id_prestamo){
+
+		$prestamo= new Prestamo_model();
+		if(  $prestamo->update(  $id_prestamo, ['ESTADO'=> 'R'] ) )
+		echo json_encode( ['IDNRO'=> $id_prestamo, 'MENSAJE'=>'LA SOLICITUD DE PRESTAMO HA SIDO RECHAZADA']);
+		else
+		$this->error_alert();
+	}
 
 	public function cobro( $id_prestamo =""){
 
@@ -236,9 +246,9 @@ class Prestamo extends BaseController
 			//Generar las cuotas
 			$cobr= new Cobro_model(); 
 			if($cobr->cobrar_cuotas())
-			return redirect()->to('/prestamo/index'); 
+			return redirect()->to(base_url("prestamo/index")); 
 			else 
-			return redirect()->to('/prestamo/error_alert'); //algun mensaje de error
+			return redirect()->to( base_url('/prestamo/error_alert')); //algun mensaje de error
 		}
 		else{
 			$prestamo_m= new Prestamo_model();
@@ -268,7 +278,7 @@ class Prestamo extends BaseController
 
 
 	public function error_alert(){
-		echo "<p>Ocurrió un error en el servidor, no se han concretado las transacciones</p>";
+		echo json_encode( ['error'=> "Ocurrió un error en el servidor, no se han concretado las transacciones"]);
 	}
 
 }

@@ -3,7 +3,7 @@
 <?= $this->section("contenido") ?>
 
 
-<a class="btn btn-sm btn-primary" href="<?= base_url("deudor/index")?>">
+<a style="font-weight: 600;" href="<?= base_url("deudor/index")?>">
 <i class="fa fa-user" aria-hidden="true"></i> &nbsp; LISTADO DE DEUDORES</a>
 
 

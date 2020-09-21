@@ -25,4 +25,13 @@ class  Deudor_model extends Model
 
 
 
+
+
+    public function  info_creditos_de_deudores(){
+     $data=  $this->db->table("deudor")
+     ->select("deudor.IDNRO, deudor.CEDULA, concat(deudor.NOMBRES, concat(' ',deudor.APELLIDOS)) as NOMBRES, deudor.CIUDAD,deudor.TELEFONO, (select count(prestamo.IDNRO) from prestamo where DEUDOR=deudor.IDNRO) as CREDITOS,deudor.created_at as REGISTRO")
+     ->orderBy("created_at", "DESC")
+    ->get()->getResultObject();
+     return $data;
+    }
 }

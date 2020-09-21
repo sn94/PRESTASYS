@@ -16,6 +16,7 @@
     <link href="<?= base_url("assets/merged.css")?>" rel="stylesheet">
     <link href="<?= base_url("assets/pnotify.css")?>" rel="stylesheet">
     <link href="<?= base_url("assets/pnotify.buttons.css")?>" rel="stylesheet">
+    <link href="<?= base_url("assets/table-export/tableexport.min.css")?>" rel="stylesheet">
    
 
     <style>
@@ -25,16 +26,22 @@
             font-weight: 600;
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
-        tr,a,label, input[type=text],select{
-            font-size: 10pt;
+        h4{
+            color: #4b4b4b; font-weight: bold;
+        }
+        tr,a,label, input[type=text]{
+            font-size: 8pt;
             color: #2a2a2a;
             font-weight: 600;
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }  
+        select{
+            font-size: 9pt;
+        }
         input[type=text],select{
             color: #444444;
         }
-        thead tr{ background-color: #7dc0f7;  }
+        thead tr{ color: white;background-color: #2a3f54 !important;  }
         tbody tr{    background-color: #b4b9fe;   }
 
 
@@ -42,13 +49,13 @@
     background-color: #7ca9fc !important;
   }    
   .table-success{
-    background-color: #64f55c !important;
+    background-color: #95f88f !important;
   }
   .table-danger{
-    background-color: #fb614a !important;
+    background-color: #fd9586 !important;
   }
   .table-secondary{
-    background-color: #909090 !important;
+    background-color: #cecece !important;
   }
 
   .icon-success{
@@ -81,8 +88,8 @@
                             <img src="<?=base_url("assets/images/img.jpg")?>" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Bienvenido,</span>
-                            <h2>John Doe</h2>
+                            <span>Bienvenido/a,</span>
+                            <h2><?= session("NICK")?></h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -98,23 +105,14 @@
                                     <ul class="nav child_menu">
                                         <li><a href="<?=base_url("deudor/index")?>">Datos de cliente</a></li>
                                         <li><a href="<?=base_url("garante/index")?>">Garantes</a></li>
-                                        <li><a href="<?=base_url("prestamo/index")?>">Préstamos</a></li>
-                                        <li><a href="index3.html">Ofrecimientos</a></li>
-                                        <li><a href="index3.html">Referencias comerciales</a></li>
-                                        <li><a href="index3.html">Datos de c&eacute;dula</a></li>
-                                        <li><a href="index3.html">Informes</a></li>
+                                        <li><a href="<?=base_url("prestamo/index")?>">Préstamos</a></li>  
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-edit"></i> Caja <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="form.html">Cobranzas</a></li>
-                                        <li><a href="form_advanced.html">Liquidaci&oacute;n</a></li>
-                                        <li><a href="form_validation.html">Pago de clientes</a></li>
-                                        <li><a href="form_wizards.html">Caja chica</a></li>
-                                        <li><a href="form_upload.html">Impresi&oacute;n de documentos</a></li>
-                                        <li><a href="form_buttons.html">Ficha de control</a></li>
-                                        <li><a href="form_buttons.html">Cierre de caja</a></li>
-                                        <li><a href="form_buttons.html">Informes</a></li>
+                                        <li><a href="form.html">Cobranzas</a></li>  
+                                        <li><a href="form_wizards.html">Caja chica</a></li>  
+                                        <li><a href="form_buttons.html">Cierre de caja</a></li> 
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-desktop"></i> Auxiliares <span class="fa fa-chevron-down"></span></a>
@@ -123,8 +121,7 @@
                                         <li><a href="<?=base_url("caja/index")?>">Caja</a></li>
                                         <li><a href="<?=base_url("cargo/index")?>">Cargos de funcionario</a></li>
                                         <li><a href="<?=base_url("categoria_monto/index")?>">Categoría de monto</a></li>
-                                        <li><a href="glyphicons.html">Edici&oacute;n fecha judicial</a></li>
-                                        <li><a href="widgets.html">Informes</a></li>
+                                        <li><a href="<?=base_url("usuario/index")?>">Usuarios</a></li> 
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-table"></i> Estadistica <span class="fa fa-chevron-down"></span></a>
@@ -156,49 +153,10 @@
                             </ul>
                         </div>
                         <div class="menu_section">
-                            <h3>Live On</h3>
+                            <h3>SOPORTE TÉCNICO</h3>
                             <ul class="nav side-menu">
-                                <li><a><i class="fa fa-bug"></i> Varios <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="e_commerce.html">Plan cta. caja chica</a></li>
-                                        <li><a href="projects.html">C&oacute;digo de letras</a></li>
-                                        <li><a href="project_detail.html">Nombres de dict&aacute;menes</a></li>
-                                        <li><a href="contacts.html">Asociaciones</a></li>
-                                        <li><a href="profile.html">Porcentajes</a></li>
-                                        <li><a href="project_detail.html">Re-proceso de datos</a></li>
-                                        <li><a href="contacts.html">Modificar vencimientos</a></li>
-                                        <li><a href="profile.html">Cambio c&oacute;d. de operaci&oacute;n</a></li>
-                                        <li><a href="profile.html">Tabla de gastos-cobranza</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-windows"></i> &Uacute;tiles <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="page_403.html">Organizar datos</a></li>
-                                        <li><a href="page_404.html">Copia de seguridad</a></li>
-                                        <li><a href="page_500.html">Restaurar copias</a></li>
-                                        <li><a href="plain_page.html">Mensajes iniciales</a></li>
-                                        <li><a href="login.html">Configurar impresora</a></li>
-                                        <li><a href="pricing_tables.html">Borrar lista de impresi&oacute;n</a></li>
-                                        <li><a href="pricing_tables.html">Actualizar datos de operaci&oacute;n</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#level1_1">Level One</a>
-                                            <li><a>Level One<span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li class="sub_menu"><a href="level2.html">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_1">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_2">Level Two</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#level1_2">Level One</a>
-                                            </li>
-                                    </ul>
-                                    </li>
+                              
+                                 
                                     <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
                             </ul>
                         </div>
@@ -236,7 +194,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?= base_url("assets/images/img.jpg")?>" alt="">John Doe
+                                    <img src="<?= base_url("assets/images/img.jpg")?>" alt=""><?=session("NICK")?>
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -248,7 +206,7 @@
                                         </a>
                                     </li>
                                     <li><a href="javascript:;">Help</a></li>
-                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    <li><a href="<?=base_url("usuario/sign_out")?>"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
                             </li>
 
@@ -362,7 +320,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    PRESTASYS v.2020<a href="https://colorlib.com">Colorlib</a>
                 </div>
                 <div class="clearfix"></div>
             </footer>
@@ -381,9 +339,13 @@
     <script src="<?=base_url("assets/jquery.smartWizard.js")?>"></script>
     <!--Notificacion-->
     <script src="<?=base_url("assets/pnotify.js")?>"></script>
-
     <script src="<?=base_url("assets/pnotify.buttons.js")?>"></script>
-    
+    <!--XLS GEN --> 
+   
+    <script src="<?=base_url("assets/xls_gen/xls.js")?>"></script> 
+    <script src="<?=base_url("assets/xls_gen/xls_ini.js")?>"></script>
+  
+   
     <script>
 
 
@@ -439,6 +401,7 @@ function autocompletado(){
 
 
 
+
 /***Autocomplete end  */
 
 
@@ -465,8 +428,11 @@ function autocompletado(){
 
 //Limpia campos numericos del separador de miles
 function quitarSeparador( obj){ 
-let w=  obj.value.replaceAll("[.]", "");
-obj.value= w;
+    
+let w= "";
+if( typeof obj == "object") {w=   obj.value.replaceAll(/\./g , ""); obj.value= w;}
+else{ w=   obj.replaceAll("\.", ""); }
+return w;
 }
 
 
@@ -502,10 +468,22 @@ function input_number_millares(ev){
 
     //convertir una cadena numerica a formato de millares
 function numero_con_puntuacion( ev){
+     
     let val_Act= ev;
-    if( typeof ev == "object")  val_Act= ev.target.value;
+    if( typeof ev == "object"){
+        if("target" in ev)
+        val_Act= ev.target.value;
+        else 
+        val_Act= ev.value;
+    }
+
     let enpuntos= new Intl.NumberFormat("de-DE").format( val_Act);
-    if( typeof ev == "object") $( ev.target).val(  enpuntos);
+    if( typeof ev == "object"){ 
+        if("target" in ev)
+        $( ev.target).val(  enpuntos);
+        else
+        $( ev).val(  enpuntos);
+        }
     else return enpuntos;
 }
     //Exclusivamente numeros
@@ -576,13 +554,14 @@ function get_custom( url, success){
     });
 }
 
-
+/*
   window.onload= function(){
       autocompletado();
       $("div.stepContainer.content").css("width", "100%");
       $("div.stepContainer.content").css("height", "100%");
       //FECHAS
     $("input[type=date]").each(  function(index, elemento){
+        if(  this.value =="" )
             $(elemento).css("color", "white");
             $(elemento).bind("change", function(){
                 if( this.value ==""  ||  this.value == undefined){
@@ -592,8 +571,8 @@ function get_custom( url, success){
                 }
                 $(  this  ).css("color", "black");
             })
-        });/** end fechas */
-  }
+        });//end fechas 
+  }*/
     </script>
 
 </body>

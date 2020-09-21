@@ -7,7 +7,7 @@ use App\Helpers\Utilidades;
 <?= $this->section("contenido") ?>
 
 
-<a class="btn btn-sm btn-primary" href="<?= base_url("prestamo/index")?>">
+<a style="font-weight: 600;" href="<?= base_url("prestamo/index")?>">
 <i class="fa fa-user" aria-hidden="true"></i> &nbsp;  PRÉSTAMOS REGISTRADOS</a>
 
 
@@ -25,6 +25,11 @@ echo form_open("prestamo/aprobar", ['id'=> "aprobacion-form" ])
 <input type="hidden" name="IDNRO" value="<?= $prestamo->IDNRO?>">
 <input type="hidden" name="cabecera[ESTADO]" value="A">
 
+
+<div class="container">
+  <button type="submit" class="btn btn-danger">GUARDAR TODO</button>
+  </div>
+  
 <div class="row">
 
 
@@ -114,32 +119,36 @@ echo form_open("prestamo/aprobar", ['id'=> "aprobacion-form" ])
 
 
 
-  <div class="checkbox" id="dias-de-pago">
+<div id="dias-de-pago">
  
-
+<div  class="checkbox">
 <label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="1"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> LUNES
+<input type="checkbox" value="1"   checked="checked"  > LUNES
 </label>
 
-<label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="2"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> MARTES
-</label>
 
 <label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="3"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> MIÉRCOLES
+<input type="checkbox" value="2"   checked="checked"  > MARTES
+</label>
+ 
+<label class="">
+<input type="checkbox" value="3"   checked="checked"  > MIÉRCOLES
+</label>
+ 
+<label class="">
+<input type="checkbox" value="4"   checked="checked"  > JUEVES
+</label>
+ 
+<label class="">
+<input type="checkbox" value="5"   checked="checked"  > VIERNES
 </label>
 
-<label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="4"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> JUEVES
-</label>
 
 <label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="5"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> VIERNES
+<input type="checkbox" value="6"   checked="checked"  > SABADO
 </label>
+</div>
 
-<label class="">
-<div class="icheckbox_flat-green checked" style="position: relative;"><input type="checkbox" value="6"  class="flat" checked="checked" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div> SABADO
-</label>
 </div>
 
 
@@ -163,9 +172,7 @@ echo form_open("prestamo/aprobar", ['id'=> "aprobacion-form" ])
 
 
 
-<div class="container">
-  <button type="submit" class="btn btn-danger">GUARDAR TODO</button>
-  </div>
+
 
 </form>
 

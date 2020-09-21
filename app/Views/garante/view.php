@@ -3,7 +3,7 @@
 <?= $this->section("contenido") ?>
 
 
-<a class="btn btn-sm btn-primary" href="<?= base_url("garante/index")?>">
+<a  style="font-weight: 600;"  href="<?= base_url("garante/index")?>">
 <i class="fa fa-user" aria-hidden="true"></i> &nbsp; LISTADO DE GARANTES</a>
 
 
@@ -14,13 +14,14 @@
 
 <!-- INI FORM -->
 <form style="padding-left: 10px;"  id="viewgarante" enctype="multipart/form-data" class="form-horizontal form-label-left container" method="post" action="/garante/edit">
- <input type="hidden" name="IDNRO" value="<?= $dato->IDNRO ?>">
+  
 <?php echo view('garante/form'); ?>
 
 </form>
 <script>
     
     window.onload= function(){
+        
         habilitarCampos( "viewgarante" , false);
     }
 </script>

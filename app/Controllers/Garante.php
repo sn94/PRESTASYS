@@ -99,7 +99,7 @@ $datos= $this->request->getPost();
 			echo json_encode(array("IDNRO"=> $db->insertID() )  ) ;
 			}
 			else
-			return redirect()->to( "index");
+			return redirect()->to( base_url("garante/index"));
 		}
 		else {  	
 			if($this->request->isAJAX())
@@ -124,7 +124,7 @@ $datos= $this->request->getPost();
 				if( $this->request->isAJAX())
 				echo json_encode( array( "IDNRO"=> $datos["IDNRO"] )  );
 				else 
-				return redirect()->to( "index");
+				return redirect()->to(base_url("garante/index"));
 			}
 			else
 			echo view('plantillas/error', ['titulo'=>"ERROR", 'mensaje'=> "NO SE PUDO ACTUALIZAR" ]);  		

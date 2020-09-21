@@ -1,5 +1,6 @@
 <?php namespace Config;
 
+use App\Filters\LoggedUser;
 use CodeIgniter\Config\BaseConfig;
 
 class Filters extends BaseConfig
@@ -10,6 +11,7 @@ class Filters extends BaseConfig
 		'csrf'     => \CodeIgniter\Filters\CSRF::class,
 		'toolbar'  => \CodeIgniter\Filters\DebugToolbar::class,
 		'honeypot' => \CodeIgniter\Filters\Honeypot::class,
+		'logged_user'=> LoggedUser::class
 	];
 
 	// Always applied before every request
@@ -17,6 +19,7 @@ class Filters extends BaseConfig
 		'before' => [
 			//'honeypot'
 			// 'csrf',
+			'logged_user'
 		],
 		'after'  => [
 			'toolbar',
@@ -32,5 +35,8 @@ class Filters extends BaseConfig
 	// List filter aliases and any before/after uri patterns
 	// that they should run on, like:
 	//    'isLoggedIn' => ['before' => ['account/*', 'profiles/*']],
-	public $filters = [];
+	public $filters = [
+		'logged_user'=> ['before'=> [ "prestamo/*", 'deudor/*', 'garante/*',  'caja/*','cargo/*',
+						'categoria_monto/*', 'funcionario/*'] ]
+	];
 }

@@ -125,6 +125,21 @@ endif;
 </div>
 
 <script>
-
+ window.onload= function(){
+   autocompletado();
+    //FECHAS
+    $("input[type=date]").each(  function(index, elemento){
+        if(  this.value =="" )
+            $(elemento).css("color", "white");
+            $(elemento).bind("change", function(){
+                if( this.value ==""  ||  this.value == undefined){
+                    console.log( this.value );
+                    $(  this  ).css("color", "white");
+                    return;
+                }
+                $(  this  ).css("color", "black");
+            })
+        });/** end fechas */
+ }
  
 </script>

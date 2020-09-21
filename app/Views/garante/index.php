@@ -4,7 +4,7 @@
 
 <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 style="color: #130257; font-weight: bold;" class="card-title ">GARANTES</h4>
+                  <h4 class="card-title ">GARANTES</h4>
                  <a href="<?= base_url("garante/create") ?>" class="btn btn-sm btn-primary">NUEVO</a>
                 </div>
                 <div class="card-body">

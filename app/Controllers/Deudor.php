@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
 
 use App\Models\Deudor_model;
-use App\Models\funcionario_model; 
+use App\Libraries\pdf_gen\PDF;
 use Exception;
 
 class Deudor extends BaseController
@@ -16,9 +16,10 @@ class Deudor extends BaseController
 	
 	public function index()
 	{
+		//$pager = \Config\Services::pager();
 		try{ 
 		$Deudor= new Deudor_model();
-		$lista =$Deudor->findAll(); //recoge todas las filas
+		$lista =$Deudor->info_creditos_de_deudores(); //recoge todas las filas
 
 		echo view("deudor/index", array("lista"=> $lista ));
 		
@@ -29,6 +30,78 @@ class Deudor extends BaseController
 	}
 
 
+
+	public function list( $tipo ){
+		$Deudor= new Deudor_model();
+		$lista =$Deudor->info_creditos_de_deudores(); //recoge todas las filas
+		if( $tipo == "json")
+		echo json_encode(   $lista );
+		else 
+		{
+			$html= <<<EOF
+			<style> 
+				.cedula{
+					width:50px;
+				}
+				.nombres{ 
+					width: 200px;
+				} 
+				tr.cabecera{
+					font-size: 7pt;
+					background-color: #c2fcca;
+					font-weight: bold;
+				}
+				table.tabla{ 
+					border-top: 1px solid #606060;
+					border-bottom: 1px solid #606060;
+				}
+				tr.cuerpo{
+					color: #363636;
+					font-size: 8px;
+					font-weight: bold;
+				}
+			 
+			</style>
+			<h6>CLIENTES</h6>
+			<table class="tabla">
+			<thead>
+			EOF;
+			//CABECERA
+			foreach( $lista as $ite){
+				$html.="<tr class=\"cabecera\">";
+				foreach( $ite as  $clave=> $valor)
+				{
+					if( $clave=="IDNRO") continue;
+					if( $clave=="TELEFONO") continue;
+					$clav= strtolower($clave);
+					$html.="<th class=\"$clav\">$clave</th>";
+				}
+				$html.="</tr></thead><tbody>";break;
+			}
+
+			foreach( $lista as $ite){
+				$html.="<tr class=\"cuerpo\">";
+				foreach( $ite as  $clave=> $valor)
+				{
+					if( $clave=="IDNRO") continue;
+					if( $clave=="TELEFONO") continue;
+					$clav= strtolower($clave);
+					$html.="<td class=\"$clav\">$valor</td>";
+				}
+				$html.="</tr>";
+			}
+			$html.= "</tbody></table>";
+
+			$tituloDocumento= "clientes-".date("d")."-".date("m")."-".date("yy")."-".rand();
+			//echo $html;
+			$pdf = new PDF();
+			//$pdf = new PDF(); 
+			$pdf->prepararPdf("$tituloDocumento.pdf", $tituloDocumento, ""); 
+			$pdf->generarHtml( $html);
+			$pdf->generar();
+		}
+
+	}
 
 
 public static function get($cedula){
@@ -99,9 +172,10 @@ $datos= $this->request->getPost();
 			echo json_encode(array("IDNRO"=> $db->insertID() )  ) ;
 			}
 			else
-			return redirect()->to( "index");
+			return redirect()->to( base_url("deudor/index"));
 		}
-		else {  	
+		else {
+			helper("form");  	
 			if($this->request->isAJAX())
 			echo view('deudor/form',  ['OPERACION'=>"A"]);  
 			else
@@ -124,7 +198,7 @@ $datos= $this->request->getPost();
 				if( $this->request->isAJAX())
 				echo json_encode( array( "IDNRO"=> $datos["IDNRO"] )  );
 				else 
-				return redirect()->to( "index");
+				return redirect()->to(  base_url("deudor/index"));
 			}
 			else
 			echo view('plantillas/error', ['titulo'=>"ERROR", 'mensaje'=> "NO SE PUDO ACTUALIZAR" ]);  		
@@ -160,4 +234,13 @@ $datos= $this->request->getPost();
 		echo json_encode( ['error' => "ERROR AL BORRAR"] );
 	}
 
+
+	public function num_credi_reg(){
+		$prestamo= new Deudor_model;
+		$DATOS= $prestamo->info_creditos_de_deudores();
+		foreach ( $DATOS AS $T){
+			echo $T->creditos;
+		}
+	}
 }
+

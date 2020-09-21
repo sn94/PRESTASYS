@@ -1,5 +1,6 @@
 <?php namespace Config;
 
+use App\myClasses\Check_login;
 use CodeIgniter\Events\Events;
 
 /*
@@ -44,3 +45,5 @@ Events::on('pre_system', function () {
 		Services::toolbar()->respond();
 	}
 });
+
+ 

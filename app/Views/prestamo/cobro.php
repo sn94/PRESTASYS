@@ -65,16 +65,63 @@ echo form_open("prestamo/cobro", ['id'=> "cobro-form" ])
 
 
  <!-- *********************DATOS ACERCA DEL MONTO TOTAL PRESTADO *****************-->
+ <input id="cate-monto"     type="hidden"     value="<?= Utilidades::number_f( $monto->MONTO )?>" >
+ <input  id="cate-formato"   type="hidden" value="<?=!isset($monto) ? "" :  $monto->FORMATO?>"> 
+ <input  id="cate-nro-cuo"   type="hidden"  value="<?= $monto->NRO_CUOTAS?>" >
+ <input  id="cate-cuotas"  type="hidden"   value="<?= $monto->CUOTA?>" >
+ 
+ 
 <div class="row">
-  <div class="col-md-3"> <div class="form-group"><label >CATEGORÍA MONTO:</label> <?= form_dropdown( "", $montos, !isset($prestamo_dato) ? "" :  $prestamo_dato->CAT_MONTO,['class'=> "select2_single form-control" ] ) ?>   </div></div>
-  <div class="col-md-2"><div class="form-group"><label for="ex4">MONTO:</label><input id="cate-monto"  readonly type="text" id="ex4" class="form-control"  value="<?= Utilidades::number_f( $monto->MONTO )?>" ></div></div>
-  <div class="col-md-2"><div class="form-group"><label>FORMATO:</label><?= form_dropdown( "", ["D"=>"DIARIO", "S"=>"SEMANAL", "Q"=>"QUINCENAL","M"=>"MENSUAL"], !isset($monto) ? "" :  $monto->FORMATO,[ 'id'=>'cate-formato', 'class'=> "select2_single form-control"  ] ) ?>   </div></div>
-  <div class="col-md-1"><div class="form-group"><label for="ex4">NRO.CUOTAS:</label><input  id="cate-nro-cuo"  readonly type="text" id="ex4" class="form-control"  value="<?= $monto->NRO_CUOTAS?>" ></div></div>
-  <div  class="col-md-2"> <div class="form-group"><label for="ex4">CUOTA</label><input  id="cate-cuotas" readonly type="text" id="ex4" class="form-control"  value="<?= $monto->CUOTA?>" ></div></div>
+  <div class="col-md-3"> <div class="form-group"><label >CATEGORÍA MONTO:</label> <?= form_dropdown( "", $montos, !isset($prestamo_dato) ? "" :  $prestamo_dato->CAT_MONTO,['class'=> "select2_single form-control", "disabled"=>"true" ] ) ?>   </div></div>
+  <div class="col-md-3"> <div class="form-group"><label >TOTAL A COBRAR</label>
+  <input style="font-size: 12pt; color: blue;" class="form-control" type="text" id="TOTALCOBRO" value="0">
+</div></div>
+
 </div><!--End row-->
+
 
  
   
+
+ <!-- *********************MODALIDADES DE COBRO VARIAS*****************-->
+ <!-- *********************EFECTIVO*****************-->
+
+  <!-- *********************CHEQUE*****************-->
+  <div class="row">
+  <div class="col-md-3"> <div class="form-group"><label >BANCO EMISOR DE CHEQUE:</label> 
+  <input maxlength="30" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="BANCO" value=""> </div></div>
+  
+  <div class="col-md-3"> <div class="form-group"><label >NÚMERO CHEQUE:</label>
+  <input maxlength="30" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="NRO_CHEQUE" value="0">
+</div></div>
+
+<div class="col-md-3"> <div class="form-group"><label >IMPORTE:</label>
+  <input oninput="input_number_millares(event)" maxlength="10" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="IMPORTE" value="0">
+</div></div>
+
+</div><!--End row-->
+
+   <!-- *********************TARJETA*****************-->
+   <div class="row">
+  <div class="col-md-3"> <div class="form-group"><label >BANCO EMISOR TARJETA:</label> 
+  <input maxlength="30" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="BANCO" value=""> </div></div>
+  
+  <div class="col-md-3"> <div class="form-group"><label >TIPO TARJETA:</label>
+  <input maxlength="30" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="NRO_CHEQUE" value="0">
+</div></div>
+
+<div class="col-md-3"> <div class="form-group"><label >MARCA:</label>
+  <input maxlength="30" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="NRO_CHEQUE" value="0">
+</div></div>
+<div class="col-md-3"> <div class="form-group"><label >IMPORTE:</label>
+  <input oninput="input_number_millares(event)" maxlength="10" style="font-size: 12pt; color: blue;" class="form-control" type="text" id="IMPORTE" value="0">
+</div></div>
+
+</div><!--End row-->
+
+
+
+
 <table  id="cuotas" class="table table-hover">
     <thead> <tr>  <th>#</th>  <th>MONTO</th>  <th>VENCIMIENTO</th>  <th>COBRAR</th> </tr>
     </thead>
@@ -88,7 +135,7 @@ echo form_open("prestamo/cobro", ['id'=> "cobro-form" ])
        <td><?= Utilidades::number_f( $cuo->MONTO )?></td>  
        <td><?= Utilidades::fecha_f( $cuo->VENCIMIENTO )?></td> 
        <td style="padding: 0px;"> 
-        <input style=" margin: 0px;width: 50px;height: 50px; transform: scale(2);" class="form-control" onchange="marcacion(event)" name="ESTADO[]" type="checkbox" value="<?=$cuo->IDNRO?>" >
+        <input style=" margin: 0px;width: 25px;height: 25px; transform: scale(2);" class="form-control" onchange="marcacion(event)" name="ESTADO[]" type="checkbox" value="<?=$cuo->IDNRO?>" >
        </td> 
       </tr>
       
@@ -112,20 +159,34 @@ echo form_open("prestamo/cobro", ['id'=> "cobro-form" ])
 <script>
 
 
+function totalizar(ev){
+
+  let total= 0; 
+
+  let checks= document.querySelectorAll("#cuotas input[type=checkbox]");
+  let checks_marcados= Array.prototype.filter.call(   checks, function(ele){
+    return ele.checked;
+  }  );
+   
+  Array.prototype.forEach.call(  checks_marcados, function(elemento, indice){
+ total+=  parseInt( quitarSeparador( $("#cate-cuotas").val())  );
+   });
+    
+  $("#TOTALCOBRO").val( numero_con_puntuacion( total)   );
+}
 
 function marcacion(ev){
   let IDCUOTA=ev.currentTarget.value;
   let POSICION_ACTUAL= -1;
-  if( ev.currentTarget.checked)
+
+  if( ev.currentTarget.checked)//MARCADO
    { 
 
     //MARCAR LOS CHECKBOX SUPERIORES
     let checks= document.querySelectorAll("#cuotas input[type=checkbox]");
     Array.prototype.forEach.call(   checks, function(elemento, indice){
-        if( elemento.value == IDCUOTA )  POSICION_ACTUAL=  indice;
-        if( POSICION_ACTUAL == -1){
-          elemento.checked= true; 
-        }
+        if( elemento.value == IDCUOTA ) { POSICION_ACTUAL=  indice;   console.log( "POSIC",  POSICION_ACTUAL); }
+        if( POSICION_ACTUAL == -1){   elemento.checked= true;     }
     });
 
     }else{//CUANDO DESMARCA 
@@ -138,6 +199,7 @@ function marcacion(ev){
             if( POSICION_ACTUAL != -1){    elemento.checked= false;    }
         });
     }
+    totalizar(ev);
 }
 
   
@@ -153,15 +215,7 @@ function marcacion(ev){
   }
 
 
-  function es_bisiesto(nu) {
-    if (parseInt(nu) % 4 == 0) {
-        if (parseInt(nu) % 100 == 0) {
-            if (parseInt(nu) % 400 == 0) {
-                return true;
-            } else return false;
-        } else { return true; }
-    } else return false;
-}
+ 
 
  
 

@@ -148,7 +148,7 @@ guardar( e, function(res){
   let mensaje= JSON.parse(res); 
   $("#form-3 input[name=IDNRO]").val( mensaje.IDNRO );
   rec_formato_numerico("#form-3");
-  new PNotify({  title: 'PRESTAMO REGISTRADO',        text: '',  type: 'success',  styling: 'bootstrap3'  });    } )
+  new PNotify({  title: mensaje.MENSAJE,        text: '',  type: 'success',  styling: 'bootstrap3'  });    } )
 
 }
 
@@ -204,5 +204,12 @@ function buscar_Garante(){
       $("#vista-form-2").html( "Error al recuperar datos" );
     }
   }   );
+}
+
+
+
+window.onload= function(){
+  $("div.stepContainer.content").css("width", "100%");
+      $("div.stepContainer.content").css("height", "100%");
 }
 </script>

@@ -2,7 +2,7 @@
 
 use App\Helpers\Utilidades;
 use App\Models\Cargo_model;
-use App\Models\funcionario_model; 
+use App\Models\Funcionario_model;
 use Exception;
 
 class Funcionario extends BaseController
@@ -70,7 +70,7 @@ class Funcionario extends BaseController
 			}
 			/******** */ 
 			$model->save($datos);
-			return redirect()->to( "index");
+			return redirect()->to( base_url("funcionario/index"));
 		}
 		else {  
 			$db = \Config\Database::connect();
@@ -115,7 +115,7 @@ class Funcionario extends BaseController
 				}
 				/******** */ 
 				if($model->update($datos["IDNRO"] , $datos ))
-				return redirect()->to( "index");
+				return redirect()->to( base_url("funcionario/index"));
 				else
 				echo view('plantillas/error', ['titulo'=>"ERROR", 'mensaje'=> $e->getMessage() ]);  
 					

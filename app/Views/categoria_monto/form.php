@@ -33,9 +33,4 @@
 
 </div>
 
-<script>
-
-window.onload= function(){
-autocompletado( "#CIUDAD");
-  };
-</script>
+ 
