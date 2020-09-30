@@ -57,7 +57,7 @@ foreach($lista as $i):?>
 
   <td>  <?=$i->TOTCUOTAS?>  </td>
   <td>  <?=$i->PAGADAS?>  </td>
-  <td><?=$i->MONTO_SOLICI?></td>
+  <td><?=$i->MONTO_APROBADO?></td>
   <td><?= Utilidades::from_timestamp( $i->FECHA_SOLICI  )?></td>
   <td><?=$i->ESTADO=="P" ? "PENDIENTE" : (  $i->ESTADO=="A" ? "APROBADO" : ( $i->ESTADO=="L" ? "LIQUIDADO" : "RECHAZADO"))  ?></td>
 </tr>

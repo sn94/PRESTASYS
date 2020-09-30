@@ -12,7 +12,8 @@ class  Cobro_model extends Model
     protected $returnType     = 'object';/** */
 
     protected $allowedFields = 
-    ['FECHA','CAJERO','DEUDOR','CAJA','EFECTIVO_T','CHEQUE_T','TARJETA_T','ESTADO','IDPRESTAMO'];
+    ['FECHA','CAJERO','DEUDOR','CAJA','EFECTIVO_T','ESTADO','IDPRESTAMO',
+    'CHEQUE_IMPO','CHEQUE_NRO','CHEQUE_BANC','TARJE_IMPO','TARJE_TIPO','TARJE_VOUCH','OBS'];
     
 
 
@@ -24,28 +25,58 @@ class  Cobro_model extends Model
     }
 
 
+    public function cobrar(){
+        $cobro= $this->request->getPost("CABECERA");  
+         //Cabecera
+        $this->insert(  $cobro  );//GRABAR CABECERA
+        $id_cobro= $this->insertID();
+        return $id_cobro;
+    }
 
     public function  cobrar_cuotas(){
-        $cobro= $this->request->getPost("CABECERA");
+        $cobro= $this->request->getPost("CABECERA");   
         $id_prestamo= $cobro['IDPRESTAMO'];
-        $this->transStart();
+        //total importes: efectivo, cheque y tarjeta
+        $TOTAL_IMPORTE=  intval($cobro['EFECTIVO_T']) + intval($cobro['TARJE_IMPO']) + intval($cobro['CHEQUE_IMPO']);
+   
         //Cabecera
-        $this->insert(  $cobro  );
+        $this->insert(  $cobro  );//GRABAR CABECERA
         //Detalles
-        $id_cobro= $this->insertID();
-        $id_cuotas_marcadas= $this->request->getPost("ESTADO");
+        $id_cobro= $this->insertID();//OBTENER ID DE COBRO
+        $id_cuotas_marcadas= $this->request->getPost("ESTADO");//OBTENER IDS DE CUOTAS MARCADAS
         //Actualizar estado de cuotas
         foreach( $id_cuotas_marcadas as $cuota){
-            $LA_CUOTA=$this->db->table('cuotas_prestamo')
-            ->set("ESTADO", "C")
-            ->where("IDPRESTAMO", $id_prestamo)
-            ->where("IDNRO", $cuota);
-           $LA_CUOTA->update();
+           
+            if( $TOTAL_IMPORTE <=0)  break;
+
+            //SOLO MARCAR SI LA CUOTA HA SIDO TOTALMENTE PAGADA
+
+            //monto
+            $monto= ( new Cuotas_model())->calc_saldo($cuota);  //MONTO ABSOLUTO
+            //para el detalle de cobro
+            //eL MONTO DE IMPORTE POR CUOTA ES VARIABLE
+            $monto_cuota= $monto;
+
+            if( $TOTAL_IMPORTE>=  $monto)
+            $this->db->table('cuotas_prestamo')->set("ESTADO", "C")->where("IDPRESTAMO", $id_prestamo)->where("IDNRO", $cuota)->update();
+            else $monto_cuota= $TOTAL_IMPORTE;//Si el pago de la cuota es Parcial
+
+
+             //ACTUALIZAR FECHA DE PAGO
+             if( $TOTAL_IMPORTE>=  $monto)
+             $this->db->table("cuotas_prestamo")->set("FECHA_PAGO" , date("Y-m-j") )->where("IDNRO", $cuota)->update();
+           
+            $TOTAL_IMPORTE-= intval($monto);
+
 
              //guardar detalle de cobro
-            $monto_cuota= $LA_CUOTA->get()->getFirstRow()->MONTO;
-            $this->db->table('detalle_cobro')->insert([ 'IDCOBRO'=>$id_cobro, 'IDCUOTA'=> $cuota, 'IMPORTE'=> $monto_cuota]);
+            $this->db->table('detalle_cobro')
+            ->insert([ 'IDCOBRO'=>$id_cobro, 'IDCUOTA'=> $cuota, 'IMPORTE'=> $monto_cuota]);
+            /*********************** */
        }
+
+
+       //********************************* */
        //YA SE HA COBRADO LA TOTALIDAD DE CUOTAS?
        $cuotas_model= new Cuotas_model();
        $BuilderCuota=$cuotas_model->builder();
@@ -53,11 +84,7 @@ class  Cobro_model extends Model
        $TotalCuotasCobradas=  $BuilderCuota->where("IDPRESTAMO", $id_prestamo)->where("ESTADO", "C")->countAllResults();//NUMERO DE CUOTAS
        if( $TotalCuotas == $TotalCuotasCobradas )
             $this->db->table("prestamo")->set("ESTADO" , "L")->where("IDNRO", $id_prestamo)->update();
-        $this->transComplete();	
-        return $this->transStatus();
-
-         
-            
+       /** END LIQUIDACION DE PRESTAMO  */      
     }
 
 }

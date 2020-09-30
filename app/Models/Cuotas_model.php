@@ -12,7 +12,7 @@ class Cuotas_model extends Model
     protected $returnType     = 'object';/** */
 
     protected $allowedFields = 
-    [ 'IDPRESTAMO','MONTO','VENCIMIENTO','FECHA_PAGO','ESTADO'];
+    [ 'IDPRESTAMO', 'NUMERO', 'MONTO','VENCIMIENTO','FECHA_PAGO','ESTADO'];
     
 
 
@@ -24,4 +24,12 @@ class Cuotas_model extends Model
 
 
 
+
+    public function calc_saldo( $IDCUOTA){
+        $TOTAL= intval( ($this->find($IDCUOTA))->MONTO ); 
+       $COBRADO= intval(  $this->db->table('detalle_cobro')->where("IDCUOTA", $IDCUOTA)->selectSum("IMPORTE")->get()->getRow()->IMPORTE );
+       $SALDO=  $TOTAL -  $COBRADO;
+       return $SALDO;
+
+    }
 }

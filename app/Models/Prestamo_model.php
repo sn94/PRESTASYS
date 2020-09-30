@@ -38,10 +38,12 @@ class  Prestamo_model extends Model
         //generar_cuotas
         $vencimientos= $this->request->getPost("vencimientos");
         $montos= $this->request->getPost("montos");
+        $NUMERO= 1;
         for( $f= 0; $f< sizeof($vencimientos) ; $f++){
              $this->db->table('cuotas_prestamo')
-            ->insert([   'IDPRESTAMO'=> $ID_prestamo,    'MONTO'    => $montos[$f],  'VENCIMIENTO'   => $vencimientos[$f]
+            ->insert([   'IDPRESTAMO'=> $ID_prestamo, 'NUMERO'=>$NUMERO,   'MONTO'    => $montos[$f],  'VENCIMIENTO'   => $vencimientos[$f]
             ]);
+            $NUMERO++;
         }
         $this->transComplete();
         return $this->transStatus();
@@ -53,7 +55,13 @@ class  Prestamo_model extends Model
     public function obtener_cuotas($ID_prestamo,$estado= "P"){
         return $this->db->table('cuotas_prestamo')
         ->where("IDPRESTAMO", $ID_prestamo)
-        ->where("ESTADO", $estado)->get()->getResult();
+        ->where("ESTADO", $estado)
+        ->select('cuotas_prestamo.*')
+        ->select("IFNULL((SELECT SUM(IMPORTE) FROM detalle_cobro where IDCUOTA=cuotas_prestamo.IDNRO),0) AS SUMA")
+        ->select("(cuotas_prestamo.MONTO -  IFNULL((SELECT SUM(IMPORTE) FROM detalle_cobro where IDCUOTA=cuotas_prestamo.IDNRO),0) ) AS SALDO")
+        
+        
+        ->get()->getResult();
     }
 
 

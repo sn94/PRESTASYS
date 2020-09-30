@@ -17,8 +17,14 @@ class LoggedUser implements FilterInterface
         $accede_a_inicio=$uri->getSegment(0)=="/";
        if( !$session->has('NICK')  && ( $accede_a_inicio ||  $no_accede_login) )
        return redirect()->to(  base_url("usuario/sign_in")); 
-        //    return redirect()->to('usuario/sign_in');///usuario/sign_in
-       // }
+
+
+       if(  !$session->has("APECAJA")  &&  (sizeof(  $uri->getSegments())>0  &&  $uri->getSegment(1) == "prestamo" && $uri->getSegment(2)== "cobro" ) )
+       return redirect()->to(  base_url("apeciecaja/aviso_pedir_apertura"));
+
+       if(  !$session->has("APECAJA")  &&  (sizeof(  $uri->getSegments())>0  &&  $uri->getSegment(1) == "apeciecaja" && $uri->getSegment(2)== "arqueo_cierre" ) )
+       return redirect()->to(  base_url("apeciecaja/aviso_cant_close"));
+   
     }
 
     //--------------------------------------------------------------------

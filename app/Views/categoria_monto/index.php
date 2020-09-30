@@ -14,7 +14,11 @@
 
 <!--form --> 
 <div id="formView">
-<?php  echo view("categoria_monto/create"); ?>
+<?php
+
+use App\Helpers\Utilidades;
+
+echo view("categoria_monto/create"); ?>
 </div>
 <!--End form--> 
 
@@ -32,9 +36,9 @@
 <tr id="<?=$i->IDNRO?>">  
 <td><a onclick="editarFila(event)" href="<?= base_url("categoria_monto/edit/".$i->IDNRO)?>"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 <td><a onclick="borrarFila(event)" href="<?= base_url("categoria_monto/delete/".$i->IDNRO)?>"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
-<td> <?= $i->MONTO?></td>
+<td> <?= Utilidades::number_f($i->MONTO) ?></td>
 <td> <?= $i->NRO_CUOTAS?></td>
-<td> <?= $i->CUOTA?></td>
+<td> <?= Utilidades::number_f($i->CUOTA) ?></td>
 <td> <?= $i->FORMATO=="D" ? "DIARIO" : ($i->FORMATO=="S" ? "SEMANAL" : ($i->FORMATO=="Q" ? "QUINCENAL" : "MENSUAL")  )   ?></td>
  </tr>
 

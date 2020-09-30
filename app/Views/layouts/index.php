@@ -21,6 +21,11 @@
 
     <style>
         
+        .centerme{
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
         h2{
             color: #2e2e2e;
             font-weight: 600;
@@ -109,10 +114,10 @@
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-edit"></i> Caja <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="form.html">Cobranzas</a></li>  
-                                        <li><a href="form_wizards.html">Caja chica</a></li>  
-                                        <li><a href="form_buttons.html">Cierre de caja</a></li> 
+                                    <ul class="nav child_menu"> 
+                                        <li><a data-toggle="modal" data-target="#formmodal" href="<?=base_url("apeciecaja/apertura")?>">Apertura de caja</a></li>  
+                                        
+                                        <li><a data-toggle="modal" data-target="#formmodal" href="<?=base_url("apeciecaja/arqueo_cierre")?>">Cierre de caja</a></li>  
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-desktop"></i> Auxiliares <span class="fa fa-chevron-down"></span></a>
@@ -132,8 +137,8 @@
                                 </li>
                                 <li><a><i class="fa fa-bar-chart-o"></i> Informes <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="chartjs.html">Cuaderno de pr&eacute;stamo</a></li>
-                                        <li><a href="chartjs2.html">Cuaderno de inversi&oacute;n</a></li>
+                                        <li><a href="<?=base_url("prestamo/informes_cobros")?>">Cobros Realizados</a></li>
+                                        <li><a href="<?=base_url("prestamo/informes_cuotas")?>">Filtrar Cuotas</a></li>
                                         <li><a href="morisjs.html">Capital & inter&eacute;s</a></li>
                                         <li><a href="echarts.html">A recaudar</a></li>
                                         <li><a href="other_charts.html">Cancelaci&oacute;n por adelantado</a></li>
@@ -316,6 +321,32 @@
          
            
             <!-- /page content -->
+
+
+            <!-- MODAL --> 
+            <div id="formmodal" class="modal fade bs-example-modal-sm in" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                       
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+            <!-- end MODAL --> 
+
+
 
             <!-- footer content -->
             <footer>

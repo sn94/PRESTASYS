@@ -62,7 +62,7 @@ public static function get($cedula){
 			echo json_encode(array("IDNRO"=> $db->insertID() )  ) ;
 			}
 			else
-			return redirect()->to(  base_url());
+			return redirect()->to(  base_url("usuario/index"));
 		}
 		else {  	
 			helper("form");
@@ -89,7 +89,7 @@ public static function get($cedula){
 				if( $this->request->isAJAX())
 				echo json_encode( array( "IDNRO"=> $datos["IDNRO"] )  );
 				else 
-				return redirect()->to( base_url());
+				return redirect()->to(  base_url("usuario/index"));
 			}
 			else
 			echo view('plantillas/error', ['titulo'=>"ERROR", 'mensaje'=> "NO SE PUDO ACTUALIZAR" ]);  		
@@ -141,7 +141,7 @@ public static function get($cedula){
 				if( password_verify($userdata['PASS'],   $user->PASS )){
 					//CORRECTA
 					$session = \Config\Services::session();
-					$newdata = [ 'NICK'  => $user->NICK, 'NIVEL'     => $user->ROL ];
+					$newdata = [ 'ID'=>$user->IDNRO, 'NICK'  => $user->NICK, 'NIVEL'     => $user->ROL ];
 					$session->set($newdata);
 					
 					return redirect()->to( base_url());

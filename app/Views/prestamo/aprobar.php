@@ -45,17 +45,15 @@ echo form_open("prestamo/aprobar", ['id'=> "aprobacion-form" ])
   </div>
 
   <div class="form-group">
-  <label for="ex4">MONTO SOLICITADO:</label>
-  <input readonly type="text" id="ex4" class="form-control" value="<?=$prestamo->MONTO_SOLICI?>">
+  <label for="ex4">MONTO A APROBAR:</label>
+  <input readonly  value="<?= Utilidades::number_f( $monto->MONTO )?>"  type="text" id="ex4" class="form-control number-format"  name="cabecera[MONTO_APROBADO]" >
   </div>
+
 </div>
 
 
 <div class="col-md-4">
-<div class="form-group">
-  <label for="ex4">MONTO APROBADO:</label>
-  <input oninput="input_number_millares(event)"  type="text" id="ex4" class="form-control number-format"  name="cabecera[MONTO_APROBADO]" >
-  </div>
+
                
   <div class="form-group ">
   <label for="ex4">FECHA DE ENTREGA:</label>
@@ -66,22 +64,18 @@ echo form_open("prestamo/aprobar", ['id'=> "aprobacion-form" ])
   <label for="ex4">FECHA INICIO COBRO:</label>
   <input onchange="generar_cuotas()"  type="date" class="form-control"  id="inicio-cobro" name="cabecera[FECHA_INI_COBRO]" >
   </div>
+
+  <div class="form-group">
+    <label >CATEGORÍA MONTO:</label> 
+      <?= form_dropdown( "cabecera[CAT_MONTO]", $montos, !isset($prestamo_dato) ? "" :  $prestamo_dato->CAT_MONTO,['class'=> "select2_single form-control", 'onchange'=>'categoria_monto(event)' ] ) ?>   
+    </div>
+
 </div>
 
 
 
 <div class="col-md-4">  <!-- CUOTAS --> 
-
-<div class="form-group">
-    <label >CATEGORÍA MONTO:</label> 
-      <?= form_dropdown( "cabecera[CAT_MONTO]", $montos, !isset($prestamo_dato) ? "" :  $prestamo_dato->CAT_MONTO,['class'=> "select2_single form-control", 'onchange'=>'categoria_monto(event)' ] ) ?>   
-    </div>
-
-<div class="form-group">
-  <label for="ex4">MONTO:</label>
-  <input id="cate-monto"  readonly type="text" id="ex4" class="form-control"  value="<?= Utilidades::number_f( $monto->MONTO )?>" >
-  </div>
-
+ 
   <div class="row">
     <div class="col-md-12">
     <div class="form-group">

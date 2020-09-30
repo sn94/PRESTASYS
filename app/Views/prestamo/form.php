@@ -49,13 +49,7 @@
     </div>
     </div>
 
-  <div class="col-12 col-md-3">
-
-  <div class="form-group">
-      <label >MONTO SOLICITADO:</label>
-      <input maxlength="10"  oninput="input_number_millares(event)"  name="MONTO_SOLICI" type="text" class="form-control number-format"  value="<?= !isset($prestamo_dato) ? "" :  $prestamo_dato->MONTO_SOLICI?>"  >
-    </div>
-</div>
+      
 
 
 </div><!-- END ROW -->
